@@ -1,0 +1,27 @@
+{
+  "name": "splush-server",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "test": "./node_modules/.bin/eslint src/* test/* && ./node_modules/.bin/mocha test/*",
+    "start": "node src/server.js"
+  },
+  "author": "xeronimus@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.13.4",
+    "glob": "7.0.0",
+    "immutable": "3.7.6",
+    "lodash": "4.3.0",
+    "loglevel": "1.4.0",
+    "node-uuid": "1.4.7",
+    "socket.io": "1.4.5",
+    "tv4": "1.2.7"
+  },
+  "devDependencies": {
+    "eslint": "1.10.3",
+    "mocha": "2.4.5"
+  }
+}
