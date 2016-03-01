@@ -1,3 +1,6 @@
+/**
+ * A user selected a story (marked it as the "current" story to estimate)
+ */
 module.exports = {
   existingRoom: true,
   preCondition: function (room, command) {
@@ -8,8 +11,8 @@ module.exports = {
   },
   fn: function selectStory(room, command) {
 
-    if (room.attributes.get('selectedStory') === command.payload.storyId) {
-      // no change, no need to apply event
+    if (room.get('selectedStory') === command.payload.storyId) {
+      // command payload matches the already selected story. No need to apply event
       return;
     }
 

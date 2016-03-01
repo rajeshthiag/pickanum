@@ -4,6 +4,7 @@ var _ = require('lodash');
  * A user gives his estimation for a certain story.
  * Users may only give estimations for the currently selected story.
  * A user that is marked as visitor cannot give estimations
+ * As soon as all users (that can estimate) estimated the story, a "revealed" event is produced
  */
 module.exports = {
   existingRoom: true,
@@ -16,8 +17,8 @@ module.exports = {
       throw new Error('Can only give estimation for currently selected story!');
     }
 
-    if (room.getIn(['stories', command.payload.storyId, 'allEstimatesGiven'])) {
-      throw new Error('You cannot give an estimate for a story with "allEstimatesGiven" set!');
+    if (room.getIn(['stories', command.payload.storyId, 'revealed'])) {
+      throw new Error('You cannot give an estimate for a story that was revealed!');
     }
 
     if (room.getIn(['users', userId, 'visitor'])) {
@@ -27,20 +28,21 @@ module.exports = {
   fn: function giveStoryEstimate(room, command) {
     // currently estimation value is also sent to clients (hidden there)
     // user could "sniff" network traffic and see estimations of colleagues...
-    // this could be improved in the future.. (e.g. not send value with "storyEstimateGiven" -> but send all values later with "allEstimatesGiven" )
+    // this could be improved in the future.. (e.g. not send value with "storyEstimateGiven" -> but send all values later with "revealed" )
     room.applyEvent('storyEstimateGiven', command.payload);
 
     // now check if every user in the room (that is not marked as visitor and is not disconnected)  did estimate the current story
-    var usersThatHaveEstimateGiven = room.attributes.getIn(['stories', command.payload.storyId, 'estimations']).keySeq().toJS();
+    var usersThatHaveEstimateGiven = room.getIn(['stories', command.payload.storyId, 'estimations']).keySeq().toJS();
     usersThatHaveEstimateGiven.push(command.payload.userId);
-    var allUsersThatCanEstimate = room.attributes.get('users')
+    var allUsersThatCanEstimate = room.get('users')
       .filter(usr => !usr.get('visitor'))
       .filter(usr => !usr.get('disconnected'))
       .keySeq().toJS();
 
     if (usersThatHaveEstimateGiven.length <= allUsersThatCanEstimate.length && _.isEqual(usersThatHaveEstimateGiven.sort(), allUsersThatCanEstimate.sort())) {
-      room.applyEvent('allEstimatesGiven', {
-        storyId: command.payload.storyId
+      room.applyEvent('revealed', {
+        storyId: command.payload.storyId,
+        manually: false
       });
     }
   }
