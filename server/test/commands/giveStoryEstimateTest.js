@@ -98,6 +98,31 @@ describe('giveStoryEstimate', () => {
     assert.equal(this.mockRoomsStore.getRoomById().getIn(['stories', this.storyId, 'estimations', this.userId]), 2);
   });
 
+  it('Should produce storyEstimateGiven event also if story already revealed', function () {
+    this.mockRoomsStore.manipulate(room => room.setIn(['stories', this.storyId, 'revealed'], true));
+
+    const producedEvents = this.processor({
+      id: this.commandId,
+      roomId: this.roomId,
+      name: 'giveStoryEstimate',
+      payload: {
+        storyId: this.storyId,
+        userId: this.userId,
+        value: 2
+      }
+    }, this.userId);
+
+    assert(producedEvents);
+    assert.equal(producedEvents.length, 1);
+
+    const storyEstimatgeGivenEvent = producedEvents[0];
+    commandTestUtils.assertValidEvent(storyEstimatgeGivenEvent, this.commandId, this.roomId, this.userId, 'storyEstimateGiven');
+    assert.equal(storyEstimatgeGivenEvent.payload.userId, this.userId);
+    assert.equal(storyEstimatgeGivenEvent.payload.storyId, this.storyId);
+    assert.equal(storyEstimatgeGivenEvent.payload.value, 2);
+
+  });
+
   describe('with additional "revealed" event', () => {
 
     it('Should produce additional "revealed" event if all users estimated (only one user)', function () {
@@ -169,22 +194,6 @@ describe('giveStoryEstimate', () => {
           value: 2
         }
       }, this.userId), /Can only give estimation for currently selected story!/);
-
-    });
-
-    it('Should throw if story already revealed', function () {
-      this.mockRoomsStore.manipulate(room => room.setIn(['stories', this.storyId, 'revealed'], true));
-
-      assert.throws(() => this.processor({
-        id: this.commandId,
-        roomId: this.roomId,
-        name: 'giveStoryEstimate',
-        payload: {
-          storyId: this.storyId,
-          userId: this.userId,
-          value: 2
-        }
-      }, this.userId), /You cannot give an estimate for a story that was revealed!/);
 
     });
 

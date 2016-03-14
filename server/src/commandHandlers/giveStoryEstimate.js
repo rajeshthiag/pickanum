@@ -17,10 +17,6 @@ module.exports = {
       throw new Error('Can only give estimation for currently selected story!');
     }
 
-    if (room.getIn(['stories', command.payload.storyId, 'revealed'])) {
-      throw new Error('You cannot give an estimate for a story that was revealed!');
-    }
-
     if (room.getIn(['users', userId, 'visitor'])) {
       throw new Error('Visitors cannot give estimations!');
     }

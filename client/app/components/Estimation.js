@@ -22,7 +22,7 @@ const Estimation = ({ selectedStory, user, newEstimationRound, reveal }) => {
   const revealed = selectedStory.get('revealed');
   const isVisitor = user.get('visitor');
 
-  const userCanCurrentlyEstimate = !revealed && !isVisitor;
+  const userCanCurrentlyEstimate = !isVisitor;
   return (
     <div className='estimation'>
 
