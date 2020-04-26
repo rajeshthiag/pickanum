@@ -1,24 +1,24 @@
 #!/bin/sh
 
-# This script pulls the "latest" poinz image from the docker hub and restarts the running "poinz" container
+# This script pulls the "latest" pickanum image from the docker hub and restarts the running "pickanum" container
 
 # list running docker containers
 echo "---- listing running docker containers ----"
 docker ps
 
-# pull newest poinz image
+# pull newest pickanum image
 echo "---- pulling newest image 'poinz' ----"
-docker pull xeronimus/poinz:latest
+docker pull rajeshinf/pickanum:latest
 
 # stop running
-echo "---- stopping running docker container 'poinz' ----"
-docker stop poinz
+echo "---- stopping running docker container 'pickanum' ----"
+docker stop pickanum
 
 # remove "poinz" container
 echo "---- deleting docker container 'poinz' ----"
-docker rm poinz
+docker rm pickanum
 
-# start new "poinz" container (will automatically pull from repo)
+# start new "pickanum" container (will automatically pull from repo)
 echo "---- starting new container ----"
-docker run --name poinz --link redis:db -p 8080:3000 -d xeronimus/poinz:latest
+docker run --name pickanum --link redis:db -p 8080:3000 -d rajeshinf/pickanum:latest
 

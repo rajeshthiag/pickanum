@@ -2,7 +2,7 @@
  *  Build Script for Docker Image
  *
  *  1. clean-up output directories
- *  2. build poinz client (webpack)
+ *  2. build pickanum client (webpack)
  *  3. transpile backend sources
  *  3. copy client and backend to "deploy" folder
  *  4. build docker image (see Dockerfile)
@@ -17,7 +17,7 @@ const del = require('del');
 const execPromised = Promise.promisify(exec);
 
 
-const HEROKU_DEPLOYMENT_TAG = 'registry.heroku.com/poinz/web';
+const HEROKU_DEPLOYMENT_TAG = 'registry.heroku.com/pickanum/web';
 
 // -- first let's clean up
 del([
@@ -86,7 +86,7 @@ function spawnAndPrint(command, arguments, options) {
 function startBuildingDockerImage(gitInfo) {
   console.log(`building docker container for ${gitInfo.hash} on ${gitInfo.branch}`);
 
-  const userAndProject = 'xeronimus/poinz';
+  const userAndProject = 'rajeshinf/pickanum';
   const cmdArgs = `build -t ${userAndProject}:latest -t ${userAndProject}:${gitInfo.branch} -t ${userAndProject}:${gitInfo.hash} -t ${HEROKU_DEPLOYMENT_TAG} .`;
 
   return spawnAndPrint('docker', cmdArgs.split(' '), {cwd: path.resolve(__dirname, '..')});
