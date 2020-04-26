@@ -48,7 +48,7 @@ class AppStatus extends React.Component {
           <i className="fa fa-refresh"></i>
         </button>
 
-        <h4>PoinZ Application Status</h4>
+        <h4>PickANum Application Status</h4>
 
         <p>
           Version: {appConfig.version} {fecha.format(appConfig.buildTime, ' DD.MM.YY HH:mm')}
