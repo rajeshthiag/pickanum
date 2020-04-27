@@ -100,7 +100,7 @@ const eventActionHandlers = {
         // you joined
 
         // set the page title
-        document.title = `PoinZ - ${event.roomId}`;
+        document.title = `PickANum - ${event.roomId}`;
 
         clientSettingsStore.setPresetUserId(payload.userId);
         clientSettingsStore.addRoomToHistory(event.roomId);

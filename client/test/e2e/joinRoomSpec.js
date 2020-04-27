@@ -7,7 +7,7 @@ describe('Join Room', () => {
 
     browser.get('/');
 
-    expect(browser.getTitle()).toEqual('PoinZ');
+    expect(browser.getTitle()).toEqual('PickANum');
 
     roomInputField.sendKeys('foo');
     roomJoinButton.click();
@@ -16,7 +16,7 @@ describe('Join Room', () => {
     element(by.css('.username-wrapper input#username')).sendKeys('e2eTestUser');
     element(by.css('.username-wrapper .pure-button.button-save')).click();
 
-    expect(browser.getTitle()).toEqual('PoinZ - foo');
+    expect(browser.getTitle()).toEqual('PickANum - foo');
 
     expect(browser.getCurrentUrl()).toContain('/foo'); // url now contains room
 
@@ -35,7 +35,7 @@ describe('Join Room', () => {
     element(by.css('.username-wrapper input#username')).sendKeys('e2eTestUser');
     element(by.css('.username-wrapper .pure-button.button-save')).click();
 
-    expect(browser.getTitle()).toEqual('PoinZ - bar'); // page title is set
+    expect(browser.getTitle()).toEqual('PickANum - bar'); // page title is set
 
     expect(topBarWhoami.getText()).toContain('e2eTestUser@bar'); // top-bar displays room
 
